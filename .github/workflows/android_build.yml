@@ -10,38 +10,38 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-  steps:
-    - name: Checkout Source Code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install Dependencies
-      run: npm ci
+      - name: Install Dependencies
+        run: npm ci
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'zulu'
-        java-version: '17'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
 
-    - name: Build Android App
-      run: |
-        cd android
-        # Create the missing Cordova plugins directory
-        mkdir -p capacitor-cordova-android-plugins
-        # Create the blank configuration file Gradle is looking for
-        touch capacitor-cordova-android-plugins/cordova.variables.gradle
-        # Grant execution permissions to Gradle wrapper
-        chmod +x gradlew
-        # Run the build
-        ./gradlew assembleDebug
+      - name: Build Android App
+        run: |
+          cd android
+          # Create the missing Cordova plugins directory
+          mkdir -p capacitor-cordova-android-plugins
+          # Create the blank configuration file Gradle is looking for
+          touch capacitor-cordova-android-plugins/cordova.variables.gradle
+          # Grant execution permissions to Gradle wrapper
+          chmod +x gradlew
+          # Run the build
+          ./gradlew assembleDebug
 
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-debug.apk
-        path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
