@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
+  steps:
     - name: Checkout Source Code
       uses: actions/checkout@v4
 
@@ -31,7 +31,13 @@ jobs:
     - name: Build Android App
       run: |
         cd android
+        # Create the missing Cordova plugins directory
+        mkdir -p capacitor-cordova-android-plugins
+        # Create the blank configuration file Gradle is looking for
+        touch capacitor-cordova-android-plugins/cordova.variables.gradle
+        # Grant execution permissions to Gradle wrapper
         chmod +x gradlew
+        # Run the build
         ./gradlew assembleDebug
 
     - name: Upload APK Artifact
